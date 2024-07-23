@@ -1,0 +1,98 @@
+﻿@model IEnumerable<Web_Đồ_An.Models.Favorite>
+@{
+    ViewData["Title"] = "Add";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="~/assets/css/vendor/font-awesome.min.css" />
+<link rel="stylesheet" href="~/assets/css/vendor/Pe-icon-7-stroke.css" />
+
+<!-- Plugin CSS (Global Plugins Files) -->
+<link rel="stylesheet" href="~/assets/css/plugins/animate.min.css">
+<link rel="stylesheet" href="~/assets/css/plugins/jquery-ui.min.css">
+<link rel="stylesheet" href="~/assets/css/plugins/swiper-bundle.min.css">
+<link rel="stylesheet" href="~/assets/css/plugins/nice-select.css">
+<link rel="stylesheet" href="~/assets/css/plugins/magnific-popup.min.css" />
+
+<!-- Style CSS -->
+<link rel="stylesheet" href="~/assets/css/style.css">
+
+<link rel="stylesheet" type="text/css" href="~/styles/categories_styles.css">
+<link rel="stylesheet" type="text/css" href="~/styles/categories_responsive.css">
+<link rel="stylesheet" type="text/css" href="~/styles/contact_styles.css">
+<link rel="stylesheet" type="text/css" href="~/styles/contact_responsive.css">
+
+<div class="container contact_container">
+    <div class="row">
+        <div class="col">
+
+            <!-- Breadcrumbs -->
+
+           
+
+        </div>
+    </div>
+    <div class="cart-area section-space-y-axis-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <form action="javascript:void(0)">
+                        <div class="">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>STT</th>
+                                        <th class="product-thumbnail">Hình ảnh</th>
+                                        <th class="cart-product-name">Tên Sản Phẩm</th>
+                                        <th class="product-subtotal">Ngày </th>
+                                        <th class="product_remove"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model != null && Model.Any())
+                                    {
+                                        var i = 1;
+                                        @foreach (var item in Model)
+                                        {
+                                        
+                                            <tr>
+                                                <td>@(i)</td>
+                                                <td>
+                                                    <img src="@item.Product.Image" alt="@item.Product.Title" style="width: 4rem;" />
+                                                </td>
+                                                <td class="product-name"><a asp-controller="Products" asp-action="Detail" asp-route-id="@item.ProductId">@item.Name</a></td>
+                                                <td>@item.CreatedDate</td>
+
+                                            </tr>
+                                            i++;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="6">Không có sản phẩm nào</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                  
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/assets/js/vendor/bootstrap.bundle.min.js"></script>
+<script src="~/assets/js/vendor/jquery-3.5.1.min.js"></script>
+<script src="~/assets/js/vendor/jquery-migrate-3.3.0.min.js"></script>
+<script src="~/assets/js/vendor/modernizr-3.11.2.min.js"></script>
+<script src="~/assets/js/vendor/jquery.waypoints.js"></script>
+
+<!--Plugins JS-->
+<script src="~/assets/js/plugins/wow.min.js"></script>
+<script src="~/assets/js/plugins/jquery-ui.min.js"></script>
+<script src="~/assets/js/plugins/swiper-bundle.min.js"></script>
+<script src="~/assets/js/plugins/jquery.nice-select.js"></script>
+<script src="~/assets/js/plugins/parallax.min.js"></script>
+<script src="~/assets/js/plugins/jquery.magnific-popup.min.js"></script>

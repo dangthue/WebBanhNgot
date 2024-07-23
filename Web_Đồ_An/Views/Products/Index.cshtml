@@ -1,0 +1,178 @@
+﻿@model X.PagedList.IPagedList<Web_Đồ_An.Models.Product>
+@using X.PagedList.Mvc.Core;
+@{
+	ViewBag.Title = "Danh sách sản phẩm";
+}
+<link rel="stylesheet" type="text/css" href="~/styles/categories_styles.css">
+<link rel="stylesheet" type="text/css" href="~/styles/categories_responsive.css">
+<script>
+	function addToCart(event) {
+		event.preventDefault(); // Chặn sự kiện mặc định của nút Mua
+
+		// Thực hiện logic thêm sản phẩm vào giỏ hàng ở đây
+
+		// Cập nhật số lượng hiển thị trên biểu tượng giỏ hàng
+		var currentItemCount = localStorage.getItem("cartItemCount") || 0; // Lấy số lượng từ Local Storage
+		currentItemCount = parseInt(currentItemCount) + 1; // Tăng số lượng lên 1
+		document.getElementById("checkout_items").innerText = currentItemCount;
+
+		// Lưu số lượng vào Local Storage
+		localStorage.setItem("cartItemCount", currentItemCount);
+	}
+</script>
+@* <div class="container product_section_container">
+	<div class="row">
+		<div class="col product_section clearfix">
+
+
+			<!-- Breadcrumbs -->
+
+			<div class="breadcrumbs d-flex flex-row align-items-center">
+				<ul>
+					<li><a href="~/Home/index">Trang chủ </a></li>
+					<li class="active"><a href="index.html"><i class="fa fa-angle-right" aria-hidden="true"></i>Sản phẩm</a></li>
+				</ul>
+			</div>
+
+			<!-- Sidebar -->
+
+			<div class="sidebar">
+				<div class="sidebar_section">
+					<div class="sidebar_title">
+						<h5>Danh sách loại </h5>
+					</div>
+									@await Component.InvokeAsync("MenuProduct")
+
+
+				</div>
+
+
+
+			</div>
+
+			<!-- Main Content -->
+
+		</div>
+	</div>
+	<div class="col-6" style="float:right;">
+		@Html.PagedListPager(Model, page => Url.Action("index", new { page = page }), new PagedListRenderOptions
+		{
+		LiElementClasses = new string[] { "page-item" },
+		PageClasses = new string[] { "page-link" }
+		})
+	</div>
+</div> *@
+
+
+<div class="container product_section_container">
+	<div class="row">
+		<div class="col product_section clearfix">
+
+
+			<!-- Breadcrumbs -->
+
+			<div class="breadcrumbs d-flex flex-row align-items-center">
+				<ul>
+					<li><a href="~/Home/index">Trang chủ </a></li>
+					<li class="active"><a href="index.html"><i class="fa fa-angle-right" aria-hidden="true"></i>Sản phẩm</a></li>
+				</ul>
+			</div>
+			<!-- Sidebar -->
+
+			<div class="sidebar">
+				<div class="sidebar_section">
+					<div class="sidebar_title">
+						<h5>Danh sách loại </h5>
+					</div>
+					@*					<vc:MenuProduct MenuProduct></vc:MenuProduct>
+					*@					@await Component.InvokeAsync("MenuProduct")
+
+
+				</div>
+
+
+
+			</div>
+
+			<!-- Main Content -->
+
+			<div class="main_content">
+
+				<!-- Products -->
+
+				<div class="products_iso">
+					<div class="row">
+						<div class="col">
+
+							<!-- Product Sorting -->
+
+
+							<!-- Product Grid -->
+
+							<div class="product-grid" style="position: relative; height: 1140px;">
+
+								<!-- Product 1 -->
+								@if (Model != null && Model.Any())
+								{
+									@foreach (var item in Model)
+									{
+										<div class="product-item @item.ProductCategory.Alias">
+											<div class="product discount product_filter">
+												<div class="product_image">
+													<a href="#"></a><img src="@item.Image" alt="">
+												</div>
+												<a asp-controller="Favorite" asp-action="AddFavorite" asp-route-productId="@item.ProductId">
+													<div class="favorite favorite_left"></div>
+
+												</a>
+												<div class="product_info">
+													<h6 class="product_name">
+														<a href="~/Products/Detail/@item.ProductId">@item.Title</a>
+													</h6>
+
+													@if (item.PriceSale > 0)
+													{
+														<div class="product_price">@Web_Đồ_An.Common.Common.FormatNumber(item.PriceSale, 0)<span>@Web_Đồ_An.Common.Common.FormatNumber(item.Price, 0)</span></div>
+														@*<input type="hidden" value="@item.PriceSale" />*@
+													}
+													else
+													{
+														<div class="product_price">@Web_Đồ_An.Common.Common.FormatNumber(item.Price, 0)</div>
+														<div style="display:none;" class="in_product_price"> @item.Price</div>
+													}
+												</div>
+											</div>
+											<div class="red_button add_to_cart_button">
+												<a asp-controller="ShopCart" asp-action="Add" asp-route-id="@item.ProductId" class="fi fi-bs-shopping-bag">Mua</a>
+											</div>
+											
+										</div>
+									}
+
+								}
+
+							</div>
+
+							<!-- Product Sorting -->
+
+							<div class="col-6" style="float:right;">
+										@Html.PagedListPager(Model, page => Url.Action("index", new { page = page }), new PagedListRenderOptions
+		   {
+			   LiElementClasses = new string[] { "page-item" },
+			   PageClasses = new string[] { "page-link" }
+		   })
+									</div>
+								</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section scripts{
+	
+
+	<script src="~/js/categories_custom.js"></script>
+
+}

@@ -1,0 +1,129 @@
+:root {
+    --color: #2c2e53;
+    --color-hover: #131317;
+}
+
+.cart {
+    /*    margin: auto;
+    margin-top: 1.5rem;
+    width: 100%;*/
+    color: var(--color);
+    background: #fff;
+}
+
+    .cart h2 {
+        padding: .5rem;
+    }
+
+    .cart .box-cart {
+        display: flex;
+        padding-bottom: 2rem;
+        gap: .5rem;
+        align-items: flex-start;
+        justify-content: space-between;
+    }
+
+.box-cart-item-box {
+    width: 100%;
+    border: 1px solid #e6e6e6;
+    box-shadow: 0 1px 5px 0 rgb(0 0 0 / 35%);
+}
+
+.box-cart-item {
+    width: calc(100% - 6rem);
+}
+
+    .box-cart-item h5,
+    .box-cart-item p {
+        margin: 0;
+        line-height: 1
+    }
+
+
+.box-cart-border-bottom {
+    border-bottom: 1px solid #e6e6e6;
+}
+
+.box-cart-item-img {
+    width: 5.5rem;
+    height: 5.5rem;
+    margin-right: .5rem;
+}
+
+.box-cart-item-btn {
+    display: flex;
+}
+
+    .box-cart-item-btn .btn {
+        border: 2px solid var(--color);
+    }
+
+.qty_btn {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0;
+}
+
+.qty_input {
+    height: 30px;
+    width: 70px;
+    border: 2px solid var(--color);
+    /*border-bottom: 2px solid var(--color);*/
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.btn-action {
+    margin-right: .5rem;
+    width: 6rem;
+    cursor: pointer;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+    .btn-action i {
+        font-size: 1.5rem;
+    }
+
+    .btn-action a {
+        margin-top: .25rem;
+        cursor: pointer;
+        border: 2px solid var(--color);
+        padding: .25rem .5rem;
+        color: #bd945f;
+        align-items: center;
+        display: flex;
+    }
+
+.cart span {
+    color: #fd475a;
+    text-align: end;
+}
+
+.box-cart-bill {
+    border: 1px solid #e6e6e6;
+    padding: 1rem;
+    box-shadow: 0 1px 5px 0 rgb(0 0 0 / 35%);
+}
+
+.cart-box {
+    margin-top: 1rem;
+}
+
+.total-price {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+}
+
+.cart .cart-box .group-btn {
+    display: flex;
+}
+
+.cart-box .btn {
+    background-color: #fff;
+    border: 2px solid var(--color);
+}

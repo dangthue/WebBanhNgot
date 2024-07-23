@@ -1,0 +1,142 @@
+﻿@model Customer
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-bold-straight/css/uicons-bold-straight.css">
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+<link rel="stylesheet" type="text/css" href="~/styles/categories_styles.css">
+<link rel="stylesheet" type="text/css" href="~/styles/categories_responsive.css">
+<style>
+    form {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background: #ccc;
+        padding: 1rem;
+    }
+</style>
+
+
+
+<div class="container product_section_container">
+    <div class="row">
+        <div class="col product_section clearfix">
+
+            <!-- Breadcrumbs -->
+
+            <div class="breadcrumbs d-flex flex-row align-items-center">
+                <ul>
+                    <li><a href="/Home">Khách hàng</a></li>
+                    <li class="active"><a href="/"><i class="fa fa-angle-right" aria-hidden="true"></i>Đăng kí</a></li>
+                </ul>
+            </div>
+
+            <div class="login-register-area section-space-y-axis-100">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-6" style="transform: translate(50%, 0%);">
+                            <form asp-action="Registy" asp-controller="Customer" id="formRegisty">
+                                <div class="login-form">
+                                    <h4 class="login-title">Đăng ký</h4>
+                                    <div class="row">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                        <div class="mb-3">
+                                            <label for="UserName" class="form-label">Họ và tên</label>
+                                            <input asp-for="Fullname" class="form-control" />
+                                            <span asp-validation-for="Fullname" class=" text-danger"></span>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="UserName" class="form-label">Email</label>
+                                            <input asp-for="Email" class="form-control" />
+                                            <span asp-validation-for="Email" class=" text-danger"></span>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="Password" class="form-label">Mật khẩu  <i class="fa-regular fa-eye" onclick="myFunction()"></i></label>
+                                            <input asp-for="Password" class="form-control" type="password" id="myInput" onblur="checkRePass()" />
+                                            @* <input type="checkbox" onclick="myFunction()"> Hiển thị mật khẩu *@
+                                            <span asp-validation-for="Password" class=" text-danger"></span>
+                                        </div>
+                                        <div class="mb-3" id="divRePass">
+                                            <label for="RePassword" class="form-label">Nhập Mật khẩu <i class="fa-regular fa-eye" onclick="myFunction1()"></i> </label>
+                                            <input name="RePassword" class="form-control" type="password" id="myInput1" onblur="checkRePass()" />
+                                            @* <input type="checkbox" onclick="myFunction1()"> Hiển thị mật khẩu *@
+                                            <span for="RePassword" class=" text-danger"></span>
+                                            <span class=" text-danger" id="rePassErr"></span>
+                                        </div>
+                                        <div class="col-lg-12 pt-5">
+                                            <button class="btn btn-custom-size lg-size btn-secondary btn-primary-hover rounded-0" id="btnDangKy">Đăng ký</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+            <style>
+                .login-title {
+                    font-size: 25px;
+                    text-align: center;
+                }
+            </style>
+ @section Scripts {
+                @{
+                    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+                }
+            <script>
+                // var checkLogin = false;
+                function myFunction() {
+                    var x = document.getElementById("myInput");
+                    if (x.type === "password") {
+                        x.type = "text";
+                    } else {
+                        x.type = "password";
+                    }
+                }
+                function myFunction1() {
+                    var x = document.getElementById("myInput1");
+                    if (x.type === "password") {
+                        x.type = "text";
+                    } else {
+                        x.type = "password";
+                    }
+                }
+                function checkRePass() {
+                    var pass = document.getElementById("myInput").value;
+                    var repass = document.getElementById("myInput1").value;
+                    if (pass != repass) {
+                        // alert("Không trùng mật khẩu");
+                        document.getElementById("rePassErr").innerHTML = "Mật khẩu không khớp";
+                        document.getElementById("btnDangKy");
+                        // checkLogin = false;
+                        document.getElementById("btnDangKy").addEventListener("click", registy);
+                        document.getElementById("btnDangKy").classList.add("btn-danger");
+                        document.getElementById("btnDangKy").classList.remove("btn-primary-hover");
+                    } else {
+                        document.getElementById("rePassErr").innerHTML = "";
+                        // checkLogin = true;
+                        document.getElementById("btnDangKy").classList.remove("btn-danger");
+                        document.getElementById("btnDangKy").classList.add("btn-primary-hover");
+                        document.getElementById("btnDangKy").removeEventListener("click", registy);
+                    }
+                }
+                        
+        
+    function registy() {
+        event.preventDefault();
+        alert("Mật khẩu không khớp! Vui lòng thử lại");
+        return false;
+    }
+</script>
+}

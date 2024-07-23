@@ -1,0 +1,191 @@
+﻿@model IEnumerable<Web_Đồ_An.Models.ShopCart>
+@using Microsoft.AspNetCore.Http;
+@using Newtonsoft.Json;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "Form thanh toán";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var customer = ViewBag.Customer as Web_Đồ_An.Models.Customer;
+}
+
+<link rel="stylesheet" href="~/assets/css/vendor/font-awesome.min.css" />
+<link rel="stylesheet" href="~/assets/css/vendor/Pe-icon-7-stroke.css" />
+
+<!-- Plugin CSS (Global Plugins Files) -->
+<link rel="stylesheet" href="~/assets/css/plugins/animate.min.css">
+<link rel="stylesheet" href="~/assets/css/plugins/jquery-ui.min.css">
+<link rel="stylesheet" href="~/assets/css/plugins/swiper-bundle.min.css">
+<link rel="stylesheet" href="~/assets/css/plugins/nice-select.css">
+<link rel="stylesheet" href="~/assets/css/plugins/magnific-popup.min.css" />
+<link rel="stylesheet" type="text/css" href="~/styles/categories_styles.css">
+<link rel="stylesheet" type="text/css" href="~/styles/categories_responsive.css">
+<!-- Style CSS -->
+<link rel="stylesheet" href="~/assets/css/style.css">
+
+
+<div class="container product_section_container">
+    <div class="row">
+        <div class="col product_section clearfix">
+
+            <main class="main-content">
+                <form asp-action="OrderPay" asp-controller="ShopCart">
+                    <div class="checkout-area section-space-y-axis-100">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-6 col-12">
+
+                                    <div class="checkbox-form">
+                                        <h3>Thông tin khách hàng </h3>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="checkout-form-list">
+                                                    <label>Họ và tên <span class="required">*</span></label>
+                                                    <input placeholder="" type="text" name="NameReciver" value="@customer.Fullname">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="checkout-form-list">
+                                                    <label>Email <span class="required">*</span></label>
+                                                    <input placeholder="" type="email" name="EmailReceive" value="@customer.Email">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="checkout-form-list">
+                                                    <label>Địa chỉ <span class="required">*</span></label>
+                                                    <input placeholder="Street address" type="text" name="Address" value="@customer.Address">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="checkout-form-list">
+                                                    <label>Số điện thoại <span class="required">*</span></label>
+                                                    <input type="text" name="Phone" value="@customer.Phone">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="checkout-form-list">
+                                                    <label>Phương thức thanh toán <span class="required">*</span></label>
+                                                    <select class="form-control" name="TypePayment">
+                                                        <option value="1" selected>COD</option>
+@*                                                        <option value="2">Chuyển khoản</option>
+*@                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="different-address">
+                                            <div class="order-notes">
+                                                <div class="checkout-form-list checkout-form-list-2">
+                                                    <label>Ghi chú nhận hàng</label>
+                                                    <textarea name="Notes" id="checkout-mess" cols="30" rows="10" placeholder="Ghi chú về đơn đặt hàng của bạn, ví dụ: ghi chú đặc biệt khi giao hàng."></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-lg-6 col-12">
+                                    <div class="your-order">
+                                        <h3>Thông tin sản phẩm đặt mua</h3>
+                                        @if (Model != null && Model.Any())
+                                        {
+                                            @* var i = 1; *@
+                                            <div class="your-order-table table-responsive">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="cart-product-name">Sản phẩm</th>
+
+                                                            <th class="cart-product-total">Giá tiền</th>
+
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var item in Model)
+                                                        {
+                                                            var money = item.PriceSale * item.Quantity;
+                                                            <tr class="cart_item">
+                                                                <td class="cart-product-name">
+                                                                    <a asp-controller="Products" asp-action="Detail" asp-route-id="@item.ProductId">@item.Title</a>
+                                                                    @* <div class="cart-plus-minus">
+                                                            <div class="dec qtybutton"><i class="fa fa-minus"></i></div>
+                                                            <input class="cart-plus-minus-box" value="@item.Quantity" type="text">
+                                                            <div class="inc qtybutton"><i class="fa fa-plus"></i></div>
+                                                            </div> *@
+                                                                    @*  <strong class="product-quantity">
+                                                            × @item.SoLuong
+                                                            </strong> *@
+                                                                </td>
+                                                                <td class="cart-product-total">
+                                                                    <span id="totalMoney" data-money="@money">
+                                                                        <span id="money">@string.Format("{0:#,##0}", @money)</span>VND
+                                                                    </span>
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                    <tfoot>
+                                                        <tr class="order-total">
+                                                            <th>Tổng thanh toán</th>
+                                                            <td>
+                                                                <strong>
+                                                                    <span id="totalMoney">
+                                                                        @string.Format("{0:#,##0}", ViewBag.Total)VND
+                                                                    </span>
+                                                                </strong>
+                                                            </td>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
+                                            <hr />
+                                            <div class="payment-method">
+                                                <div class="payment-accordion">
+
+                                                    <div id="accordion">
+                                                        <div class="card">
+                                                            <p>
+                                                                Phí vận chuyển: Miễn phí vận chuyển
+                                                            </p>
+                                                        </div>
+                                                        <div class="card">
+                                                            <p>
+                                                                Thông tin vận chuyển: Sản phẩm sẽ được giao trong 2-7 ngày
+                                                                Chi tiết liên hệ:
+                                                                <a href="012345678">012345678</a>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="order-button-payment">
+                                                        <input class="button" name="Thanh toán" value="Thanh toán" type="submit">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <span colspan="6">Không có sản phẩm nào</span>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </main>
+</div>
+
+</div>
+</div>
+           
+
+        
+
+<style>
+    select {
+        border: 1px solid #dee2e6;
+        height: 42px;
+        width: 100%;
+    }
+</style>
+

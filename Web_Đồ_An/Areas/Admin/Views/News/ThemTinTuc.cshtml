@@ -1,0 +1,232 @@
+﻿@model Web_Đồ_An.Models.News
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "ThemTinTuc";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+@section naviheader{
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/admin" class="nav-link">Trang chủ</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/admin/news" class="nav-link">Tin tức</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="#" class="nav-link">Thêm mới</a>
+        </li>
+    </ul>
+}
+
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Thêm mới Tin tức</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Tin tức</a></li>
+                    <li class="breadcrumb-item active">Thêm mới</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Thông tin Bài viết </h3>
+        </div>
+
+        <div class="bs-stepper-content">
+            @using (Html.BeginForm("ThemTinTuc", "News", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                <div class="form-horizontal">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div id="logins-part" class="content active dstepper-block" role="tabpanel" aria-labelledby="logins-part-trigger">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Tiêu đề </label>
+                            @Html.TextBoxFor(x => x.Title, new { @class = "form-control", @plachilder = "Tên danh mục" })
+                            @Html.ValidationMessageFor(x => x.Title, null, new { @class = "text-danger" })
+                        </div>
+                        
+                       
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Hình ảnh</label>
+                            <div class="col-md-10">
+                                <input type="file" name="FileAnh" />
+                                @Html.ValidationMessageFor(x => x.Image, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                       
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Mô tả</label>
+                            @Html.TextAreaFor(x => x.Description, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Detail" class="control-label">Chi Tiết </label>
+                            <textarea asp-for="Detail" id="inputDetai" class="form-control"></textarea>
+                            <span asp-validation-for="Detail" class="text-danger"></span>
+                        </div>
+                      @*  <div class="form-group">
+                            <label for="exampleInputPassword1">Chi tiết</label>
+                            @Html.TextAreaFor(x => x.Detail, new { @class = "form-control", @id = "txtDetail" })
+                        </div>*@
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Hiển thị</label>
+                            @Html.CheckBoxFor(x => x.IsActive,new { @checked= "@checked" })
+                        </div>
+                      @*   <div class="form-group">
+                            <label for="exampleInputPassword1">Seo title</label>
+                            @Html.TextAreaFor(x => x.SeoTitle, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">SeoDescription</label>
+                            @Html.TextAreaFor(x => x.SeoDescription, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">SeoKeywords</label>
+                            @Html.TextAreaFor(x => x.SeoKeywords, new { @class = "form-control" })
+                        </div> *@
+
+                        @*<div class="form-group">
+                            <label for="CategoryId" class="control-label">CategoryId</label>
+                            @Html.DropDownListFor(x => x.CategoryId, ViewBag.CategoryId as SelectList, "-Chọn danh mục sản phẩm-", new { @class = "form-control", @placeholder = "Mã mã phẩm" })
+
+                            <select id="CategoryId" name="CategoryId" class="form-control">
+                                @foreach (var item in ViewBag.CategoryId as IEnumerable<SelectListItem>)
+                                {
+                                    <option value="@item.Value">@item.Text</option>
+                                }
+                            </select>
+                        </div>*@
+                        
+
+                        <div class="form-group">
+
+                            <input type="submit" value="Lưu" class="btn btn-primary" />
+
+                            <a href="/admin/news" class="btn btn-danger">Quay lại</a>
+                        </div>
+
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+@section  scripts{
+
+    <script>
+    function upload(field) {
+        var finder = new CKFinder();
+        finder.selectActionFunction = function (fileUrl) {
+            document.getElementById(field).value = fileUrl;
+        };
+        finder.popup();
+    }
+   
+
+    class MyUploadAdapter {
+        constructor(loader) {
+            this.loader = loader;
+        }
+
+        upload() {
+            return this.loader.file
+                .then(file => new Promise((resolve, reject) => {
+                    this._initRequest();
+                    this._initListeners(resolve, reject, file);
+                    this._sendRequest(file);
+                }));
+        }
+        // Aborts the upload process.
+        abort() {
+            if (this.xhr) {
+                this.xhr.abort();
+            }
+        }
+
+        // Initializes the XMLHttpRequest object using the URL passed to the constructor.
+        _initRequest() {
+            const xhr = this.xhr = new XMLHttpRequest();
+
+            xhr.open('POST', '@Url.Action("UploadImage", "News")', true);
+            xhr.responseType = 'json';
+        }
+
+        // Initializes XMLHttpRequest listeners.
+        _initListeners(resolve, reject, file) {
+            const xhr = this.xhr;
+            const loader = this.loader;
+            const genericErrorText = `Couldn't upload file: ${file.name}.`;
+
+            xhr.addEventListener('error', () => reject(genericErrorText));
+            xhr.addEventListener('abort', () => reject());
+            xhr.addEventListener('load', () => {
+                const response = xhr.response;
+
+                if (!response || response.error) {
+                    return reject(response && response.error ? response.error.message : genericErrorText);
+                }
+
+                resolve({
+                    default: response.url
+                });
+            });
+
+            if (xhr.upload) {
+                xhr.upload.addEventListener('progress', evt => {
+                    if (evt.lengthComputable) {
+                        loader.uploadTotal = evt.total;
+                        loader.uploaded = evt.loaded;
+                    }
+                });
+            }
+        }
+
+        _sendRequest(file) {
+            // Prepare the form data.
+            const data = new FormData();
+
+            data.append('upload', file);
+
+            // Send the request.
+            this.xhr.send(data);
+        }
+    }
+
+    function MyCustomUploadAdapterPlugin(editor) {
+        editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+            // Configure the URL to the upload script in your backend here!
+            return new MyUploadAdapter(loader);
+        };
+    }
+
+    ClassicEditor
+        .create(document.querySelector('#inputDetai'), {
+            extraPlugins: [MyCustomUploadAdapterPlugin],
+        })
+        .then(editor => {
+            window.editor = editor;
+        })
+        .catch(error => {
+            console.error(error.stack);
+        });
+</script>
+
+
+}

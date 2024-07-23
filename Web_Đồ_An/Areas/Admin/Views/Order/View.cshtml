@@ -1,0 +1,146 @@
+﻿@model Web_Đồ_An.Models.Order
+@using X.PagedList;
+@{
+    ViewBag.Title = "Chi tiết đơn hàng";
+    var productDetail = ViewBag.productDetail as List<OrderDetail>;
+
+}
+@section naviheader{
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/admin" class="nav-link">Trang chủ</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="#" class="nav-link">Chi tiết đơn hàng</a>
+        </li>
+    </ul>
+}
+
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Chi tiết đơn hàng</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Mã đơn hàng</label>
+                        <p class="form-control">@Model.Code</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Họ tên khách</label>
+                        <p class="form-control">@Model.NameReciver</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Tổng tiền</label>
+                        <p class="form-control">@Web_Đồ_An.Common.Common.FormatNumber(Model.TotalAmount, 0) đ</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Số điện thoại</label>
+                        <p class="form-control">@Model.Phone</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Ngày tạo</label>
+                        <p class="form-control">@Model.CreatedDate.ToString("dd/MM/yyyy")</p>
+                    </div>
+                </div>
+               
+           
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Trạng thái</label>
+                        <p class="form-control">@(Model.TypePayment == 1 ? "Chờ thành toán" : (Model.TypePayment == 2 ? "Đã thanh toán" : "Hủy đơn hàng"))</p>
+                    </div>
+                </div>
+               
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <h2>Danh sách sản phẩm</h2>
+                </div>
+                <div class="col-12">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th> Hình ảnh </th>
+                                <th>Tên sản phẩm</th>
+                                <th>Giá</th>
+                                <th>Giá khuyến mại</th>
+                                <th>Số lượng</th>
+                                <th>Thành tiền</th>
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            @if (productDetail != null)
+                            {
+                                var i = 1;
+                                @foreach (var item in productDetail)
+                                {
+                                    <tr>
+                                        <td>@i</td>
+                                        <td>
+                                            <img src="@item.Product.Image" alt="@item.Product.Title" style="width: 4rem;" />
+                                        </td>
+                                        <td>@item.Product.Title</td>
+                                        <td>@Web_Đồ_An.Common.Common.FormatNumber((item.Product.Price), 0) VND</td>
+                                        <td>@Web_Đồ_An.Common.Common.FormatNumber((item.Product.PriceSale), 0) VND</td>
+                                        <td>@item.Quantity</td>
+                                        @if (item.Product.PriceSale > 0 && item.Product.PriceSale < item.Product.Price)
+                                        {
+                                            <td>@Web_Đồ_An.Common.Common.FormatNumber((item.Product.PriceSale * item.Quantity), 0) VDN</td>
+
+                                        }
+                                        else
+                                        {
+                                            <td>@Web_Đồ_An.Common.Common.FormatNumber((item.Product.Price * item.Quantity), 0) VDN</td>
+                                        }
+                                    </tr>
+                                    i++;
+                                }
+
+
+                            }
+
+                        </tbody>
+                    </table>
+</div>
+            </div>
+
+            <div class="form-group">
+
+                <a href="/admin/order" class="btn btn-danger">Quay lại</a>
+            </div>
+
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+
+        </div>
+        <!-- /.card-footer-->
+    </div>
+    <!-- /.card -->
+
+</section>
+<!-- /.content -->

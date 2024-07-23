@@ -1,0 +1,81 @@
+﻿@model X.PagedList.IPagedList<Web_Đồ_An.Models.News>
+@using X.PagedList.Mvc.Core;
+
+@{
+    ViewBag.Title = "Trang tin tức ";
+}
+
+<link rel="stylesheet" type="text/css" href="~/styles/main_styles.css">
+<link rel="stylesheet" type="text/css" href="~/styles/contact_styles.css">
+<link rel="stylesheet" type="text/css" href="~/styles/contact_responsive.css">
+<!-- Slider -->
+<style>
+    .news_section_container {
+        margin-top: 180px;
+    }
+
+    .row-item-new {
+        margin-bottom: 20px;
+    }
+
+    .title-news {
+        font-size: 24px;
+        border-bottom: 1px solid;
+        padding: 15px 0;
+        margin-bottom: 25px;
+    }
+
+    .img-box img {
+        max-width: 100%;
+        max-height: 100%;
+    }
+</style>
+<div class="container news_section_container">
+    <div class="row">
+        <div class="col">
+
+            <!-- Breadcrumbs -->
+
+            <div class="breadcrumbs d-flex flex-row align-items-center">
+                <ul>
+                    <li><a href="~/home/index">Trang chủ  </a></li>
+                    <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Tin tức</a></li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        @if (Model != null && Model.Any())
+        {
+            foreach (var item in Model)
+            {
+                <div class="row row-item-new">
+                    <div class="col-md-3">
+                        <div class="img-box">
+                            <a href="" title="@item.Title"><img src="@item.Image" alt="@item.Title" /></a>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="content-box">
+                            <h3><a href="~/News/Detail/@item.NewId" title="@item.Title">@item.Title</a></h3>
+                            <div class="description-box">
+                                @item.Description
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+      
+        }
+   </div>
+    <div class="col-6" style=" float:right;">
+                        @Html.PagedListPager(Model, page => Url.Action("index", new { page = page }), new PagedListRenderOptions
+                        {
+                        LiElementClasses = new string[] { "page-item" },
+                        PageClasses = new string[] { "page-link" }
+                        })
+       </div>
+</div>
+
+

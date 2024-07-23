@@ -1,0 +1,149 @@
+﻿@model IEnumerable<Web_Đồ_An.Models.ProductImage>
+
+@{
+    ViewData["Title"] = "Thêm hình ảnh";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    var productId = ViewBag.Id;
+}
+
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Thêm hình ảnh</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+                    <li class="breadcrumb-item active">@ViewBag.Title</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<section class="content">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title" style="margin-top: 0.5rem;"> @ViewBag.Title </h3>
+            <div class="row card-tools">
+                <div>
+                    <a href="#" class="btn btn-danger" id="BtnDeleteAll">Xóa</a>
+
+                    <a href="/admin/product" class="btn btn-danger">Quay lại</a>
+
+                </div>
+
+            </div>
+        </div>
+        <div class="card-body row">
+            <form asp-action="Create" enctype="multipart/form-data" method="post" class="col-md-6">
+                <div class="form-group">
+                    <h5>Tải hình ảnh</h5>
+                    <input type="hidden" name="productId" value="@productId" />
+                    <div class="input-group">
+                        <div class="custom-file">
+                            <input class="form-control" type="file" name="productImages" multiple />
+                        </div>
+                        <div class="input-group-append">
+                            <input type="submit" value="Tải lên" class="btn btn-primary" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div class="col-md-6">
+                <h5>Danh sách hình ảnh</h5>
+                <table class="table table-hover table-bordered">
+                    <thead>
+                        <tr>
+                            <th style="width: 56px;">STT</th>
+                            <th>Hình ảnh</th>
+                            <th style="width: 80px;"><input type="checkbox" id="SelectAll" /></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            var i = 1;
+                            foreach (var item in Model)
+                            {
+                                <tr id="trow_@item.ProductImgId">
+                                    <td>@i</td>
+                                    <td>
+                                        <img src="@item.Url" style="height:64px;width:64px" />
+                                    </td>
+                                    <td><input type="checkbox" class="cbkItem" value="@item.ProductImgId" /></td>
+                                </tr>
+                                i++;
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="3">Không có bản ghi nào </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            //chọn nhều bản ghi cùng lúc
+            $('body').on('change', '#SelectAll', function () {
+                var checkStatus = this.checked;
+                var checkbox = $(this).parents('.card-body').find('tr td input:checkbox');
+                checkbox.each(function () {
+                    this.checked = checkStatus;
+                    if (this.checked) {
+                        checkbox.attr('selected', 'checked');
+                    } else {
+                        checkbox.attr('selected', '');
+                    }
+                });
+            });
+
+            //xoá nhiều bản ghi cùng lúc
+            $('body').on('click', '#BtnDeleteAll', function (e) {
+                e.preventDefault();
+                var str = "";
+                var checkbox = $(this).parents('.card').find('tr td input:checkbox');
+                var i = 0;
+                checkbox.each(function () {
+                    if (this.checked) {
+                        var _id = $(this).val();
+                        if (i === 0) {
+                            str += _id;
+                        } else {
+                            str += "," + _id;
+                        }
+                        i++;
+                    } else {
+                        checkbox.attr('selected', '');
+                    }
+                });
+                if (str.length > 0) {
+                    var conf = confirm('Bạn có muốn xóa các bản ghi này hay không?');
+                    if (conf === true) {
+                        $.ajax({
+                            url: '/admin/ProductImages/DeleteAll',
+                            type: 'POST',
+                            data: { ids: str },
+                            success: function (rs) {
+                                if (rs.success) {
+                                    location.reload();
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+}

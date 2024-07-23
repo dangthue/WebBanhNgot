@@ -1,0 +1,65 @@
+﻿@model Web_Đồ_An.Models.News
+@{
+   
+}
+<link rel="stylesheet" type="text/css" href="~/styles/main_styles.css">
+<link rel="stylesheet" type="text/css" href="~/styles/contact_styles.css">
+<link rel="stylesheet" type="text/css" href="~/styles/contact_responsive.css">
+<!-- Slider -->
+<style>
+    .news_section_container {
+        margin-top: 180px;
+    }
+
+    .row-item-new {
+        margin-bottom: 20px;
+    }
+
+    .title-news {
+        font-size: 24px;
+        border-bottom: 1px solid;
+        padding: 15px 0;
+        margin-bottom: 25px;
+    }
+
+   
+</style>
+<div class="container news_section_container">
+    <div class="row">
+        <div class="col">
+
+            <!-- Breadcrumbs -->
+
+            <div class="breadcrumbs d-flex flex-row align-items-center">
+                <ul>
+                    <li><a href="~/home/index">Tin tức   </a></li>
+                    <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Chi tiết</a></li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+    @if (Model != null)
+    {
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="title-news"> @Model.Title</h1>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-md-12">
+                @Html.Raw(Model.Detail)
+            </div>
+          
+        </div>
+        <div class="row">
+        <div class="col-md-3">
+            <div class="img-box">
+                <a href="" title="@Model.Title"><img src="@Model.Image" alt="@Model.Title" /></a>
+            </div>
+        </div>
+        </div>
+    }
+
+</div>

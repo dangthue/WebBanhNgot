@@ -1,0 +1,44 @@
+﻿<!-- Slider -->
+<link rel="stylesheet" type="text/css" href="~/styles/main_styles.css">
+
+<div class="main_slider" style="background-image:url(/Content/Images/sanpham/anhadv.jpg)">
+	<div class="container fill_height">
+		<div class="row align-items-center fill_height">
+			<div class="col">
+				<div class="main_slider_content">
+					<h1>Get up to 30% Off New Arrivals</h1>
+					<div class="red_button shop_now_button"><a href="~/products/index">shop now</a></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Banner -->
+<!-- New Arrivals -->
+
+<div class="new_arrivals">
+	<div class="container">
+		@await Component.InvokeAsync("MenuAriivals")
+	</div>
+</div>
+
+<!-- Deal of the week -->
+<!-- Best Sellers -->
+<div class="best_sellers">
+	<div class="container">
+		<div class="row">
+			<div class="col text-center">
+				<div class="section_title new_arrivals_title">
+					<h2>Bánh giảm giá</h2>
+				</div>
+			</div>
+		</div>
+     @await Component.InvokeAsync("ProductSale")
+</div>
+</div>
+
+<!-- Benefit -->
+
+<!-- Blogs -->
+
+

@@ -1,0 +1,201 @@
+﻿@model IEnumerable<Web_Đồ_An.Models.OrderDetail>
+@{
+    ViewData["Title"] = "orderDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var orders = ViewBag.orders as List<Order>;
+}
+<link rel="stylesheet" href="~/assets/css/vendor/font-awesome.min.css" />
+<link rel="stylesheet" href="~/assets/css/vendor/Pe-icon-7-stroke.css" />
+
+<!-- Plugin CSS (Global Plugins Files) -->
+<link rel="stylesheet" href="~/assets/css/plugins/animate.min.css">
+<link rel="stylesheet" href="~/assets/css/plugins/jquery-ui.min.css">
+<link rel="stylesheet" href="~/assets/css/plugins/swiper-bundle.min.css">
+<link rel="stylesheet" href="~/assets/css/plugins/nice-select.css">
+<link rel="stylesheet" href="~/assets/css/plugins/magnific-popup.min.css" />
+
+<!-- Style CSS -->
+<link rel="stylesheet" href="~/assets/css/style.css">
+
+<link rel="stylesheet" type="text/css" href="~/styles/categories_styles.css">
+<link rel="stylesheet" type="text/css" href="~/styles/categories_responsive.css">
+
+<div class="container product_section_container">
+    <div class="row">
+        <div class="col product_section clearfix">
+
+            <!-- Breadcrumbs -->
+
+           
+
+
+<main class="main-content">
+    <div class="account-page-area section-space-y-axis-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="tab-content myaccount-tab-content" id="account-page-tab-content">
+                        <div class="" id="account-orders" role="tabpanel" aria-labelledby="account-orders-tab">
+                            @if (ViewBag.orders != null && ViewBag.orders.Count > 0)
+                            {
+                                var order = ViewBag.orders[0];
+                                <div class="d-flex" style="justify-content: space-between;">
+                                    <div style="font-size: 20px;">
+                                        <span>Địa chỉ nhận hàng </span>
+                                    </div>
+
+                                    <div style="font-size: 17px;">
+                                                    <span>Mã hóa đơn: @order.Code</span> 
+                                    </div>
+                                </div>
+
+                                <div class="myaccount-dashboard d-flex row">
+                                    <p>
+                                        Họ và tên: @order.NameReciver
+                                    </p>
+                                    <p>
+                                        Số điện thoại: @order.Phone
+                                    </p>
+                                    <p>
+                                        Địa chỉ: @order.Address
+                                    </p>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-12">
+                    <div class="tab-content myaccount-tab-content" id="account-page-tab-content">
+                        <div class="" id="account-orders" role="tabpanel" aria-labelledby="account-orders-tab">
+                            @if (Model != null && Model.Any())
+                            {
+                                @foreach (var item in Model)
+                                {
+                                    <div class="myaccount-orders d-flex row">
+
+                                        <div class="col-md-2">
+                                            <img class="img-product-detail" src="@item.Product.Image" />
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p class="prduct-name">@item.Product.Title</p>
+                                            @* <p class="prduct-cate">Phân loại: @item.Product.ProductCategory.Name</p> *@
+                                            <p class="prduct-cate">Số lượng: @item.Quantity</p>
+                                            <div class="price-box pb-1">
+                                                @if (item.TotalMoney > 0)
+                                                {
+                                                    <span class="old-price" style="color: #757575;">
+                                                        @Web_Đồ_An.Common.Common.FormatNumber(item.Price, 0) VND
+                                                    </span>
+
+                                                    <span class="new-price text-danger">
+                                                        @Web_Đồ_An.Common.Common.FormatNumber(item.TotalMoney, 0) VND
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="new-price">
+                                                        @Web_Đồ_An.Common.Common.FormatNumber(item.Price, 0) VND
+                                                    </span>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                <div class="col-md-12" style="text-align: end;">
+                                    <div>
+                                        <p class="totalPrice">Thành tiền: <span class="new-price text-danger"> @Web_Đồ_An.Common.Common.FormatNumber(ViewBag.totalMoney, 0) VND </span></p>
+                                    </div>
+                                    @* <div class="button-wrap mt-4">
+                                        <button type="submit" value="submit" class="btn btn btn-custom-size btn-primary btn-secondary-hover rounded-0" name="submit">Trả hàng</button>
+                                    </div> *@
+                                </div>
+                            }
+                            else
+                            {
+                                <div>Bạn chưa có đơn hàng nào</div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</div>
+    </div>
+
+</div>
+<style>
+    .img-product-detail {
+        height: 100px;
+        width: 150px;
+    }
+
+    .myaccount-dashboard p {
+        color: black;
+    }
+    .myaccount-orders.d-flex {
+        border-top: 1px solid #E8E8E8;
+        padding: 10px 0;
+        border-bottom: 1px solid #E8E8E8;
+        margin-bottom: 2rem;
+        background: white;
+    }
+
+    .section-space-y-axis-100 {
+        /* background: #f5f5f5; */
+        padding-top: 4rem;
+    }
+
+    
+
+        p.prduct-name {
+            font-size: 15px;
+        color: black;
+        }
+
+    p.prduct-cate {
+        font-size: 15px;
+        color: black;
+    }
+
+    p.totalPrice {
+        font-size: 15px;
+        color: black;
+    }
+
+    .col-md-4 {
+        padding: 0px;
+        text-align: right;
+    }
+
+    .old-price {
+        margin: 0 4px 0 0;
+    }
+
+    p.totalPrice {
+        font-size: 20px;
+    }
+
+    .myaccount-dashboard p {
+       margin-bottom: 0px;
+    }
+    
+</style>
+        <script src="~/assets/js/vendor/bootstrap.bundle.min.js"></script>
+        <script src="~/assets/js/vendor/jquery-3.5.1.min.js"></script>
+        <script src="~/assets/js/vendor/jquery-migrate-3.3.0.min.js"></script>
+        <script src="~/assets/js/vendor/modernizr-3.11.2.min.js"></script>
+        <script src="~/assets/js/vendor/jquery.waypoints.js"></script>
+
+        <!--Plugins JS-->
+        <script src="~/assets/js/plugins/wow.min.js"></script>
+        <script src="~/assets/js/plugins/jquery-ui.min.js"></script>
+        <script src="~/assets/js/plugins/swiper-bundle.min.js"></script>
+        <script src="~/assets/js/plugins/jquery.nice-select.js"></script>
+        <script src="~/assets/js/plugins/parallax.min.js"></script>
+        <script src="~/assets/js/plugins/jquery.magnific-popup.min.js"></script>
+
+        <!--Main JS (Common Activation Codes)-->
+        <script src="assets/js/main.js"></script>

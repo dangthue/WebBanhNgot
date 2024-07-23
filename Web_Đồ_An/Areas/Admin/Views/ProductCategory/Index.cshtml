@@ -1,0 +1,193 @@
+﻿
+@{
+    ViewBag.Title = "Danh mục sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@model X.PagedList.IPagedList<Web_Đồ_An.Models.ProductCategory>
+@using X.PagedList.Mvc.Core;
+@section naviheader{
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/admin" class="nav-link">Trang chủ</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/admin/ ProductCategory" class="nav-link">@ViewBag.Title</a>
+        </li>
+    </ul>
+}
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Quản lý danh mục </h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Trang chủ </a></li>
+                    <li class="breadcrumb-item active">@ViewBag.Title</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title"> @ViewBag.Title </h3>
+            <div class="card-tools">
+                <a href="/admin/ProductCategory/add" class="btn btn-primary">Thêm mới  </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+              
+            </div>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Tiêu đề</th>
+                        <th>Ngày tạo</th>
+                        <th style="width:200px;">Chức năng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        var i = ((ViewBag.Page - 1) * ViewBag.PageSize) + 1;
+                        foreach (var item in Model)
+                        {
+                            <tr id="trow_@item.ProductCategoryId">
+                                <td>@i</td>
+                                <td>@item.Title</td>
+                                <td>@item.CreatedDate.ToString("dd/MM/yyyy")</td>
+                                <td>
+                                    <a href="/admin/ProductCategory/edit/@item.ProductCategoryId" class="btn-sm btn-info"><i class="fa-solid fa-pen-to-square"></i></a>
+                                    <a class="btn-sm btn-info btn-delete" data-id="@item.ProductCategoryId"><i class="fa-solid fa-trash-can"></i></a>
+                                </td>
+                            </tr>
+                            i++;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="4">Không có bản ghi nào!!!</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <div class="col-6"></div>
+            <div class="col-6" style="margin-top: 2rem;">
+                @Html.PagedListPager(Model, page => Url.Action("index", new { page = page }), new PagedListRenderOptions
+                {
+                LiElementClasses = new string[] { "page-item" },
+                PageClasses = new string[] { "page-link" }
+                })
+            </div>
+        </div>
+
+
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+        </div>
+        <!-- /.card-footer-->
+    </div>
+    <!-- /.card -->
+
+</section>
+<!-- /.content -->
+@section scripts{
+    <script>
+
+        //xóa nhiều bản ghi
+        $(document).ready(function () {
+            $('.btn-delete').on('click', function (e) {
+                e.preventDefault();
+
+                var id = $(this).data('id');
+                var deleteUrl = '/admin/ProductCategory/delete';
+
+                const swalWithBootstrapButtons = Swal.mixin({
+                    customClass: {
+                        confirmButton: "btn btn-success",
+                        cancelButton: "btn btn-danger"
+                    },
+                    buttonsStyling: false
+                });
+
+                swalWithBootstrapButtons.fire({
+                    title: "Bạn có chắc muốn xoá bản ghi?",
+                    showCancelButton: true,
+                    confirmButtonText: "Xoá",
+                    cancelButtonText: "Không",
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: deleteUrl,
+                            type: 'POST',
+                            data: { id: id },
+                            success: function (response) {
+                                if (response.success) {
+                                    swalWithBootstrapButtons.fire({
+                                        text: "Bạn đã xoá thành công!",
+                                        icon: "success"
+                                    }).then(() => {
+                                        location.reload();
+                                    });
+                                } else {
+                                    swalWithBootstrapButtons.fire({
+                                        title: "Bản ghi đã được sử dụng!",
+                                        text: "Bạn không thể xoá bản ghi.",
+                                        icon: "error"
+                                    });
+                                }
+                            },
+                        });
+                    }
+                });
+            });
+
+            // tìm kieema
+            $('body').on('click', '.btnActive', function (e) {
+                e.preventDefault();
+                var btn = $(this);
+                var id = btn.data("id");
+                $.ajax({
+                    url: '/admin/ProductCategory/IsActive',
+                    type: 'POST',
+                    data: { id: id },
+                    success: function (rs) {
+                        if (rs.success) {
+                            if (rs.isAcive) {
+                                btn.html("<i class='fa fa-check text-success'></i>");
+                                //$(this).find("i").removeClass("fas fa-times text-danger")
+                                //$(this).find("i").addClass("fa fa-check text-success");
+                            } else {
+                                btn.html("<i class='fas fa-times text-danger'></i>");
+                            }
+                        }
+
+                    }
+                });
+            });
+        });
+    </script>
+    }
+
+
+

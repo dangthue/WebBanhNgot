@@ -1,0 +1,112 @@
+﻿@using Microsoft.AspNetCore.Http;
+@using Newtonsoft.Json;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@model Web_Đồ_An.Models.Customer
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-bold-straight/css/uicons-bold-straight.css">
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+<link rel="stylesheet" type="text/css" href="~/styles/categories_styles.css">
+<link rel="stylesheet" type="text/css" href="~/styles/categories_responsive.css">
+<style>
+    form {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background: #ccc;
+        padding: 1rem;
+    }
+</style>
+
+
+
+<div class="container product_section_container">
+    <div class="row">
+        <div class="col product_section clearfix">
+
+            <!-- Breadcrumbs -->
+
+            <div class="breadcrumbs d-flex flex-row align-items-center">
+                <ul>
+                    <li><a href="/Home">Khách hàng</a></li>
+                    <li class="active"><a href="/"><i class="fa fa-angle-right" aria-hidden="true"></i>Đăng nhập </a></li>
+                </ul>
+            </div>
+
+
+            <div class="login-register-area section-space-y-axis-100">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-6" style="transform: translate(50%, 0%);">
+                            <form asp-action="Login" asp-controller="Customer" method="post">
+                                <div class="login-form">
+                                    <h4 class="login-title">Đăng nhập</h4>
+                                    <div class="row">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                        <div class="mb-3">
+                                            <label for="UserName" class="form-label">Tên đăng nhập</label>
+                                            <input asp-for="Email" class="form-control" />
+                                            <span asp-validation-for="Email" class=" text-danger"></span>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="Password" class="form-label">Mật khẩu <i class="fa-regular fa-eye" onclick="myFunction()"></i></label>
+                                            <input asp-for="Password" class="form-control" type="password" id="myInput" />
+                                            <span asp-validation-for="Password" class=" text-danger"></span>
+                                        </div>
+
+                                        @* <div class="col-md-7">
+                                        <div class="check-box">
+                                        <input type="checkbox" id="remember_me">
+                                        <label for="remember_me">Remember me</label>
+                                        </div>
+                                        </div> *@
+                                        @* <div class="col-md-5 pt-1 mt-md-0">
+                                        <div class="check-box">
+                                        <input type="checkbox" id="password_me" onclick="myFunction()">
+                                        <label for="password_me">Hiển thị mật khẩu</label>
+                                        </div>
+                                        </div> *@
+                                        <div class="col-lg-12 pt-5">
+                                            <button class="btn btn-custom-size lg-size btn-secondary btn-primary-hover rounded-0">Đăng nhập</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script src="~/lib/jquery/dist/jquery.js"></script>
+
+            <style>
+                .login-title {
+                    font-size: 25px;
+                    text-align: center;
+                }
+            </style>
+
+            @section Scripts {
+                @{
+                    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+                }
+                <script>
+                    function myFunction() {
+                        var x = document.getElementById("myInput");
+                        if (x.type === "password") {
+                            x.type = "text";
+                        } else {
+                            x.type = "password";
+                        }
+                    }
+                </script>
+            }
+
+

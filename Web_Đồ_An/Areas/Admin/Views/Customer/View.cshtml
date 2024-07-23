@@ -1,0 +1,75 @@
+﻿@model Web_Đồ_An.Models.Customer
+@using X.PagedList;
+@{
+    ViewBag.Title = "thông tin khách hàng ";
+
+}
+@section naviheader {
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/admin" class="nav-link">Trang chủ</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="#" class="nav-link">THông tin khách hàng </a>
+        </li>
+    </ul>
+}
+
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Thông tin khách hàng </h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Họ tên khách</label>
+                        <p class="form-control">@Model.Fullname</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <p class="form-control">@Model.Email</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Địa chỉ </label>
+                        <p class="form-control">@Model.Address</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>SĐT</label>
+                        <p class="form-control">@Model.Phone</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Ngày sinh</label>
+                        <p class="form-control">@Model.Brithday.ToString("dd/MM/yyyy")</p>
+                    </div>
+                </div>
+
+
+              
+            </div>
+            <div class="form-group">
+
+                <a href="/admin/customer" class="btn btn-danger">Quay lại</a>
+            </div>
+
+  </section>
